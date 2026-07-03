@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hannah's SAT Practice Test 4 Review</title>
+<style>
+  :root { --correct:#22c55e; --wrong:#ef4444; --skipped:#f59e0b; --bg:#f8fafc; --card:#fff; --text:#1e293b; --muted:#64748b; --border:#e2e8f0; --accent:#3b82f6; }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
+  .header{background:linear-gradient(135deg,#1e40af,#3b82f6);color:#fff;padding:2.5rem 1.5rem;text-align:center}
+  .header h1{font-size:1.8rem;margin-bottom:.25rem} .header p{opacity:.85;font-size:1rem}
+  .container{max-width:920px;margin:0 auto;padding:1.5rem}
+  .dashboard{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem;margin:1.5rem 0 2rem}
+  .score-card{background:var(--card);border-radius:12px;padding:1.25rem;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.08);border:1px solid var(--border)}
+  .score-card .label{font-size:.8rem;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+  .score-card .value{font-size:2rem;font-weight:700;margin:.25rem 0} .score-card .sub{font-size:.85rem;color:var(--muted)}
+  .score-card.total .value{color:var(--accent)} .score-card.correct .value{color:var(--correct)}
+  .score-card.wrong .value{color:var(--wrong)} .score-card.skipped .value{color:var(--skipped)}
+  .score-bar-wrap{margin:1.5rem 0} .score-bar-wrap .bar-label{display:flex;justify-content:space-between;font-size:.85rem;color:var(--muted);margin-bottom:.4rem}
+  .score-bar{height:10px;background:#e2e8f0;border-radius:99px;overflow:hidden}
+  .score-bar .fill{height:100%;border-radius:99px;background:linear-gradient(90deg,#22c55e,#16a34a);transition:width .6s ease}
+  .est-score{background:linear-gradient(135deg,#1e40af,#7c3aed);color:#fff;border-radius:16px;padding:2rem;text-align:center;margin:2rem 0}
+  .est-score h3{font-size:1rem;opacity:.85;margin-bottom:.5rem} .est-score .range{font-size:2.5rem;font-weight:800}
+  .est-score .breakdown{display:flex;justify-content:center;gap:2rem;margin-top:1rem;font-size:.9rem;opacity:.9}
+  .est-score .detail{font-size:.8rem;opacity:.7;margin-top:.5rem}
+  .section-header{display:flex;align-items:center;justify-content:space-between;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1rem 1.25rem;margin:2rem 0 .75rem;cursor:pointer;user-select:none;box-shadow:0 1px 3px rgba(0,0,0,.06);transition:background .15s}
+  .section-header:hover{background:#f1f5f9} .section-header h2{font-size:1.15rem}
+  .section-header .stats{display:flex;gap:1rem;font-size:.85rem} .section-header .stats span{display:flex;align-items:center;gap:.3rem}
+  .section-header .arrow{font-size:1.2rem;transition:transform .2s;color:var(--muted)} .section-header.open .arrow{transform:rotate(180deg)}
+  .section-content{display:none;padding:0 0 1rem} .section-content.open{display:block}
+  .question-card{background:var(--card);border-radius:12px;border:1px solid var(--border);border-left:4px solid var(--wrong);margin-bottom:.75rem;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+  .question-card.skipped{border-left-color:var(--skipped)}
+  .q-header{display:flex;align-items:center;justify-content:space-between;padding:1rem 1.25rem;cursor:pointer;transition:background .15s}
+  .q-header:hover{background:#f8fafc} .q-info{display:flex;align-items:center;gap:.75rem;flex:1}
+  .q-number{font-weight:700;font-size:.85rem;background:#f1f5f9;border-radius:8px;padding:.3rem .6rem;white-space:nowrap}
+  .q-summary{font-size:.95rem} .q-summary .wrong-label{color:var(--wrong);font-weight:600}
+  .q-summary .skip-label{color:var(--skipped);font-weight:600} .q-summary .correct-label{color:var(--correct);font-weight:600}
+  .q-arrow{font-size:1rem;color:var(--muted);transition:transform .2s;flex-shrink:0;margin-left:.5rem}
+  .question-card.open .q-arrow{transform:rotate(180deg)}
+  .q-detail{display:none;padding:0 1.25rem 1.25rem;border-top:1px solid var(--border);margin-top:-.25rem;padding-top:1rem}
+  .question-card.open .q-detail{display:block}
+  .passage{background:#f8fafc;border:1px solid var(--border);border-radius:8px;padding:1rem;margin-bottom:1rem;font-size:.9rem;line-height:1.7;color:#334155}
+  .passage em{font-style:italic} .passage .underline{text-decoration:underline}
+  .choices{list-style:none;margin:1rem 0;display:flex;flex-direction:column;gap:.5rem}
+  .choices li{padding:.6rem .85rem;border-radius:8px;font-size:.9rem;border:1px solid var(--border);position:relative;padding-left:2.5rem}
+  .choices li::before{content:attr(data-letter);position:absolute;left:.85rem;font-weight:700;color:var(--muted)}
+  .choices li.her-wrong{background:#fef2f2;border-color:#fecaca;color:#991b1b}
+  .choices li.her-wrong::after{content:" \2190 Hannah's answer";font-size:.75rem;color:#dc2626;margin-left:.5rem;font-weight:600}
+  .choices li.her-skip{background:#fffbeb;border-color:#fde68a;color:#92400e}
+  .choices li.correct-answer{background:#f0fdf4;border-color:#bbf7d0;color:#166534}
+  .choices li.correct-answer::after{content:" \2713 Correct";font-size:.75rem;color:#16a34a;margin-left:.5rem;font-weight:700}
+  .choices li.her-wrong.correct-answer{background:linear-gradient(90deg,#fef2f2,#f0fdf4)}
+  .explanation{font-size:.92rem;line-height:1.7;color:#334155;margin-top:1rem}
+  .explanation p{margin-bottom:.75rem}
+  .why-right{background:#f0fdf4;border-radius:8px;padding:.75rem 1rem;margin-bottom:.75rem;font-size:.88rem;color:#166534;border:1px solid #bbf7d0}
+  .why-wrong{background:#fef2f2;border-radius:8px;padding:.75rem 1rem;margin-bottom:.75rem;font-size:.88rem;color:#991b1b;border:1px solid #fecaca}
+  .hannah-note{background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:.75rem 1rem;margin-bottom:1rem;font-size:.88rem;color:#1e40af;font-style:italic}
+  .hannah-note::before{content:"Hannah's note: ";font-weight:600;font-style:normal}
+  .q-stem{font-weight:600;margin:.75rem 0 .5rem;font-size:.92rem}
+  .table-wrap{overflow-x:auto;margin:1rem 0}
+  .data-table{border-collapse:collapse;font-size:.85rem;width:100%}
+  .data-table th,.data-table td{border:1px solid var(--border);padding:.4rem .6rem;text-align:center}
+  .data-table th{background:#f1f5f9;font-weight:600}
+  @media(max-width:600px){.header h1{font-size:1.4rem}.dashboard{grid-template-columns:repeat(2,1fr)}.est-score .breakdown{flex-direction:column;gap:.5rem}.section-header{flex-wrap:wrap;gap:.5rem}}
+</style>
+</head>
+<body>
+<div class="header">
+  <h1>Hannah's SAT Practice Test #4 Review</h1>
+  <p>Complete Missed Question Review with Explanations</p>
+</div>
+<div class="container">
+
+<div class="dashboard">
+  <div class="score-card total"><div class="label">Total Correct</div><div class="value">103</div><div class="sub">out of 120</div></div>
+  <div class="score-card correct"><div class="label">Accuracy</div><div class="value">85.8%</div><div class="sub">103 correct</div></div>
+  <div class="score-card wrong"><div class="label">Wrong</div><div class="value">9</div><div class="sub">answered incorrectly</div></div>
+  <div class="score-card skipped"><div class="label">Skipped</div><div class="value">8</div><div class="sub">left blank</div></div>
+</div>
+
+<div class="score-bar-wrap">
+  <div class="bar-label"><span>Overall Accuracy</span><span>103/120 (85.8%)</span></div>
+  <div class="score-bar"><div class="fill" style="width:85.8%"></div></div>
+</div>
+
+<div class="est-score">
+  <h3>Estimated SAT Score (from Official Conversion Table)</h3>
+  <div class="range">1340 &ndash; 1390</div>
+  <div class="breakdown">
+    <span>R&W: 59 raw &rarr; 690&ndash;710</span>
+    <span>Math: 44 raw &rarr; 650&ndash;680</span>
+  </div>
+  <div class="detail">R&W Module 1: 28/33 &nbsp;|&nbsp; R&W Module 2: 31/33 &nbsp;|&nbsp; Math Module 1: 22/27 &nbsp;|&nbsp; Math Module 2: 22/27</div>
+</div>
+
+<h2 style="margin:2rem 0 .5rem;font-size:1.3rem">Questions to Review (17 total)</h2>
+<p style="color:var(--muted);margin-bottom:1rem;font-size:.92rem">Click each question to see the full passage, all answer choices, and the explanation.</p>
+
+<!-- ===================== RW MODULE 1 ===================== -->
+<div class="section-header" onclick="toggleSection(this)">
+  <div><h2>Reading & Writing &mdash; Module 1</h2></div>
+  <div class="stats"><span style="color:var(--correct)">28/33</span><span style="color:var(--wrong)">5 missed</span><span class="arrow">&#9660;</span></div>
+</div>
+<div class="section-content">
+
+<!-- RW1 Q7 -->
+<div class="question-card" onclick="toggleCard(this)">
+  <div class="q-header"><div class="q-info"><span class="q-number">Q7</span><span class="q-summary">Hannah: <span class="wrong-label">A</span> | Correct: <span class="correct-label">D</span></span></div><span class="q-arrow">&#9660;</span></div>
+  <div class="q-detail">
+    <div class="passage">The following text is from Walt Whitman's 1860 poem "Calamus 24."<br><br><em>I HEAR it is charged against me that I seek to destroy institutions;<br>But really I am neither for nor against institutions<br>(What indeed have I in common with them?&mdash;Or what with the destruction of them?),<br>Only I will establish in the Mannahatta [Manhattan] and in every city of These States, inland and seaboard,<br>And in the fields and woods, and above every keel [ship] little or large, that dents the water,<br>Without edifices, or rules, or trustees, or any argument,<br>The institution of the dear love of comrades.</em></div>
+    <p class="q-stem">Which choice best describes the overall structure of the text?</p>
+    <ul class="choices">
+      <li data-letter="A)" class="her-wrong">The speaker questions an increasingly prevalent attitude, then summarizes his worldview.</li>
+      <li data-letter="B)">The speaker regrets his isolation from others, then predicts a profound change in society.</li>
+      <li data-letter="C)">The speaker concedes his personal shortcomings, then boasts of his many achievements.</li>
+      <li data-letter="D)" class="correct-answer">The speaker addresses a criticism leveled against him, then announces a grand ambition of his.</li>
+    </ul>
+    <div class="explanation">
+      <div class="why-right"><strong>Why D is correct:</strong> The speaker begins by stating he has heard others accuse him of seeking to destroy institutions. He then addresses this criticism ("I am neither for nor against institutions") and announces his grand ambition: to establish "the institution of the dear love of comrades" everywhere in the country. The structure is: address criticism &rarr; announce ambition.</div>
+      <div class="why-wrong"><strong>Why A is incorrect:</strong> While the speaker addresses an opinion of him that he believes to be untrue, he doesn't indicate this attitude has become <em>increasingly prevalent</em>. He also concludes by explaining his goal for the future, not summarizing his current worldview.</div>
+    </div>
+  </div>
+</div>
+
+<!-- RW1 Q8 -->
+<div class="question-card" onclick="toggleCard(this)">
+  <div class="q-header"><div class="q-info"><span class="q-number">Q8</span><span class="q-summary">Hannah: <span class="wrong-label">D</span> | Correct: <span class="correct-label">B</span></span></div><span class="q-arrow">&#9660;</span></div>
+  <div class="q-detail">
+    <div class="passage">The mimosa tree evolved in East Asia, where the beetle <em>Bruchidius terrenus</em> preys on its seeds. In 1785, mimosa trees were introduced to North America, far from any <em>B. terrenus</em>. <span class="underline">But evolutionary links between predators and their prey can persist across centuries and continents.</span> Around 2001, <em>B. terrenus</em> was introduced in southeastern North America near where botanist Shu-Mei Chang and colleagues had been monitoring mimosa trees. Within a year, 93 percent of the trees had been attacked by the beetles.</div>
+    <p class="q-stem">Which choice best describes the function of the third sentence in the overall structure of the text?</p>
+    <ul class="choices">
+      <li data-letter="A)">It states the hypothesis that Chang and colleagues had set out to investigate using mimosa trees and <em>B. terrenus</em>.</li>
+      <li data-letter="B)" class="correct-answer">It presents a generalization that is exemplified by the discussion of the mimosa trees and <em>B. terrenus</em>.</li>
+      <li data-letter="C)">It offers an alternative explanation for the findings of Chang and colleagues.</li>
+      <li data-letter="D)" class="her-wrong">It provides context that clarifies why the species mentioned spread to new locations.</li>
+    </ul>
+    <div class="explanation">
+      <div class="why-right"><strong>Why B is correct:</strong> The underlined third sentence makes a <strong>generalization</strong> ("evolutionary links between predators and their prey can persist across centuries and continents"). The rest of the passage then <strong>exemplifies</strong> this generalization with the specific case of mimosa trees and <em>B. terrenus</em> beetles, which maintained their predator-prey relationship despite being separated for over 200 years across continents.</div>
+      <div class="why-wrong"><strong>Why D is incorrect:</strong> The third sentence doesn't discuss any particular species or explain why species spread to new locations. It makes a broad claim about evolutionary links, not about migration patterns.</div>
+    </div>
+  </div>
+</div>
+
+<!-- RW1 Q17 -->
+<div class="question-card" onclick="toggleCard(this)">
+  <div class="q-header"><div class="q-info"><span class="q-number">Q17</span><span class="q-summary">Hannah: <span class="wrong-label">C</span> | Correct: <span class="correct-label">A</span></span></div><span class="q-arrow">&#9660;</span></div>
+  <div class="q-detail">
+    <div class="table-wrap"><table class="data-table"><caption style="font-weight:600;margin-bottom:.5rem;text-align:left">Effects of Mycorrhizal Fungi on 3 Plant Species</caption><tr><th>Plant species</th><th>Mycorrhizal host</th><th>Avg mass w/ fungi (g)</th><th>Avg mass w/o fungi (g)</th></tr><tr><td>Corn</td><td>yes</td><td>15.1</td><td>3.8</td></tr><tr><td>Marigold</td><td>yes</td><td>10.2</td><td>2.4</td></tr><tr><td>Broccoli</td><td>no</td><td>7.5</td><td>7</td></tr></table></div>
+    <div class="passage">Mycorrhizal fungi in soil benefits many plants, substantially increasing the mass of some. A student conducted an experiment to illustrate this effect, including two mycorrhizal hosts (species known to benefit from the fungi) and one nonmycorrhizal species (a species that doesn't benefit and may even be harmed). The student measured the plants' average mass and was surprised to discover that _______</div>
+    <p class="q-stem">Which choice most effectively uses data from the table to complete the statement?</p>
+    <ul class="choices">
+      <li data-letter="A)" class="correct-answer">broccoli grown in soil containing mycorrhizal fungi had a slightly higher average mass than broccoli grown in soil that had been treated to kill fungi.</li>
+      <li data-letter="B)">corn grown in soil containing mycorrhizal fungi had a higher average mass than broccoli grown in soil containing mycorrhizal fungi.</li>
+      <li data-letter="C)" class="her-wrong">marigolds grown in soil containing mycorrhizal fungi had a much higher average mass than marigolds grown in soil that had been treated to kill fungi.</li>
+      <li data-letter="D)">corn had the highest average mass of all three species grown in soil that had been treated to kill fungi, while marigolds had the lowest.</li>
+    </ul>
+    <div class="explanation">
+      <div class="why-right"><strong>Why A is correct:</strong> The key word is <strong>"surprised."</strong> Broccoli is a <em>nonmycorrhizal</em> species &mdash; the text says such species either see no difference or are <em>harmed</em> by the fungi. But the data shows broccoli with fungi (7.5g) was <em>slightly higher</em> than without (7g). This contradicts expectations, making it surprising.</div>
+      <div class="why-wrong"><strong>Why C is incorrect:</strong> Marigold <em>is</em> a mycorrhizal host, so seeing it grow more massive with fungi is <em>exactly what the student expected</em> &mdash; not surprising at all. The question specifically asks what the student was <strong>surprised</strong> to discover.</div>
+    </div>
+  </div>
+</div>
+
+<!-- RW1 Q18 -->
+<div class="question-card" onclick="toggleCard(this)">
+  <div class="q-header"><div class="q-info"><span class="q-number">Q18</span><span class="q-summary">Hannah: <span class="wrong-label">D</span> | Correct: <span class="correct-label">A</span></span></div><span class="q-arrow">&#9660;</span></div>
+  <div class="q-detail">
+    <div class="passage">Several artworks found among the ruins of the ancient Roman city of Pompeii depict a female figure fishing with a cupid nearby. Some scholars have asserted that the figure is the goddess Venus, since she is known to have been linked with cupids in Roman culture, but University of Leicester archaeologist Carla Brain suggests that cupids may have also been associated with fishing generally. The fact that a cupid is shown near the female figure, therefore, _______</div>
+    <p class="q-stem">Which choice most logically completes the text?</p>
+    <ul class="choices">
+      <li data-letter="A)" class="correct-answer">is not conclusive evidence that the figure is Venus.</li>
+      <li data-letter="B)">suggests that Venus was often depicted fishing.</li>
+      <li data-letter="C)">eliminates the possibility that the figure is Venus.</li>
+      <li data-letter="D)" class="her-wrong">would be difficult to account for if the figure is not Venus.</li>
+    </ul>
+    <div class="explanation">
+      <div class="why-right"><strong>Why A is correct:</strong> If cupids were associated with <em>both</em> Venus and fishing generally, then seeing a cupid near a fishing figure doesn't prove the figure is Venus &mdash; the cupid might just be there because of the fishing. The cupid's presence is <strong>not conclusive</strong> evidence either way.</div>
+      <div class="why-wrong"><strong>Why D is incorrect:</strong> This is the <em>opposite</em> of the passage's logic. If cupids are associated with fishing generally (Brain's point), then a cupid near a fishing figure is <em>easy</em> to account for regardless of whether she's Venus. Choice D implies the cupid would only make sense if the figure were Venus, which contradicts Brain's argument.</div>
+    </div>
+  </div>
+</div>
+
+<!-- RW1 Q26 -->
+<div class="question-card" onclick="toggleCard(this)">
+  <div class="q-header"><div class="q-info"><span class="q-number">Q26</span><span class="q-summary">Hannah: <span class="wrong-label">B</span> | Correct: <span class="correct-label">A</span></span></div><span class="q-arrow">&#9660;</span></div>
+  <div class="q-detail">
+    <div class="passage">Sociologist Alton Okinaka sits on the review board tasked with adding new sites to the Hawai'i Register of Historic Places, which includes Pi'ilanihale Heiau and the 'Opaeka'a Road Bridge. Okinaka doesn't make such decisions _______ all historical designations must be approved by a group of nine other experts from the fields of architecture, archaeology, history, and Hawaiian culture.</div>
+    <p class="q-stem">Which choice completes the text so that it conforms to the conventions of Standard English?</p>
+    <ul class="choices">
+      <li data-letter="A)" class="correct-answer">single-handedly, however;</li>
+      <li data-letter="B)" class="her-wrong">single-handedly; however,</li>
+      <li data-letter="C)">single-handedly, however,</li>
+      <li data-letter="D)">single-handedly however</li>
+    </ul>
+    <div class="explanation">
+      <div class="why-right"><strong>Why A is correct:</strong> The word "however" is a <strong>supplementary adverb</strong> placed between two main clauses. Choice A correctly uses a <strong>comma</strong> before "however" (separating it from the first clause) and a <strong>semicolon</strong> after "however" (joining the second clause). The semicolon after "however" correctly signals that the <em>preceding</em> clause ("Okinaka doesn't make such decisions single-handedly") contrasts with what might be assumed.</div>
+      <div class="why-wrong"><strong>Why B is incorrect:</strong> Placing the semicolon <em>before</em> "however" and the comma <em>after</em> it changes the logical meaning. It would illogically signal that the <em>next</em> clause (about needing approval) is the contrasting point, when actually it's the first clause that's the surprise (that Okinaka doesn't act alone).</div>
+    </div>
+  </div>
+</div>
+
+</div><!-- end RW M1 -->
+
+<!-- ===================== RW MODULE 2 ===================== -->
+<div class="section-header" onclick="toggleSection(this)">
+  <div><h2>Reading & Writing &mdash; Module 2</h2></div>
+  <div class="stats"><span style="color:var(--correct)">31/33</span><span style="color:var(--wrong)">2 missed</span><span class="arrow">&#9660;</span></div>
+</div>
+<div class="section-content">
+
+<!-- RW2 Q16 -->
+<div class="question-card" onclick="toggleCard(this)">
+  <div class="q-header"><div class="q-info"><span class="q-number">Q16</span><span class="q-summary">Hannah: <span class="wrong-label">B</span> | Correct: <span class="correct-label">A</span></span></div><span class="q-arrow">&#9660;</span></div>
+  <div class="q-detail">
+    <div class="passage">Many of William Shakespeare's tragedies address broad themes that still appeal to today's audiences. For instance, <em>Romeo and Juliet</em>, which is set in the Italy of Shakespeare's time, tackles the themes of parents versus children and love versus hate, and the play continues to be read and produced widely around the world. But understanding Shakespeare's so-called history plays can require a knowledge of several centuries of English history. Consequently, _______</div>
+    <p class="q-stem">Which choice most logically completes the text?</p>
+    <ul class="choices">
+      <li data-letter="A)" class="correct-answer">many theatergoers and readers today are likely to find Shakespeare's history plays less engaging than the tragedies.</li>
+      <li data-letter="B)" class="her-wrong">some of Shakespeare's tragedies are more relevant to today's audiences than twentieth-century plays.</li>
+      <li data-letter="C)"><em>Romeo and Juliet</em> is the most thematically accessible of all Shakespeare's tragedies.</li>
+      <li data-letter="D)">experts in English history tend to prefer Shakespeare's history plays to his other works.</li>
+    </ul>
+    <div class="explanation">
+      <div class="why-right"><strong>Why A is correct:</strong> The passage sets up a contrast: tragedies have <em>broad, timeless themes</em> (universally appealing) while history plays require <em>specialized knowledge</em> (centuries of English history). "Consequently" signals a logical result: since most people don't have that knowledge, they'll find history plays less engaging. The comparison is between tragedies and history plays.</div>
+      <div class="why-wrong"><strong>Why B is incorrect:</strong> The text <em>never mentions</em> twentieth-century plays at all. The comparison is only between Shakespeare's tragedies and his <em>own</em> history plays. B introduces an irrelevant comparison.</div>
+    </div>
+  </div>
+</div>
+
+<!-- RW2 Q28 -->
+<div class="question-card" onclick="toggleCard(this)">
+  <div class="q-header"><div class="q-info"><span class="q-number">Q28</span><span class="q-summary">Hannah: <span class="wrong-label">B</span> | Correct: <span class="correct-label">A</span></span></div><span class="q-arrow">&#9660;</span></div>
+  <div class="q-detail">
+    <div class="passage">When soil becomes contaminated by toxic metals, it can be removed from the ground and disposed of in a landfill. _______ contaminated soil can be detoxified via phytoremediation: plants that can withstand high concentrations of metals absorb the pollutants and store them in their shoots, which are then cut off and safely disposed of, preserving the health of the plants.</div>
+    <p class="q-stem">Which choice completes the text with the most logical transition?</p>
+    <ul class="choices">
+      <li data-letter="A)" class="correct-answer">Alternatively,</li>
+      <li data-letter="B)" class="her-wrong">Specifically,</li>
+      <li data-letter="C)">For example,</li>
+      <li data-letter="D)">As a result,</li>
+    </ul>
+    <div class="explanation">
+      <div class="why-right"><strong>Why A is correct:</strong> The first sentence describes one method (removing soil to a landfill). The second sentence introduces a <em>different</em> method (phytoremediation). "Alternatively" correctly signals that this is an <strong>alternative approach</strong> to the same problem.</div>
+      <div class="why-wrong"><strong>Why B is incorrect:</strong> "Specifically" would signal that phytoremediation is a <em>more detailed explanation</em> of removing soil &mdash; but it's an entirely different method. "For example" (C) implies it's an instance of the first method. "As a result" (D) implies it's a consequence. None of these fit the relationship between two <em>alternative</em> methods.</div>
+    </div>
+  </div>
+</div>
+
+</div><!-- end RW M2 -->
+
+<!-- ===================== MATH MODULE 1 ===================== -->
+<div class="section-header" onclick="toggleSection(this)">
+  <div><h2>Math &mdash; Module 1</h2></div>
+  <div class="stats"><span style="color:var(--correct)">22/27</span><span style="color:var(--wrong)">5 missed</span><span class="arrow">&#9660;</span></div>
+</div>
+<div class="section-content">
+
+<!-- M1 Q19 -->
+<div class="question-card skipped" onclick="toggleCard(this)">
+  <div class="q-header"><div class="q-info"><span class="q-number">Q19</span><span class="q-summary"><span class="skip-label">Skipped</span> | Correct: <span class="correct-label">C</span></span></div><span class="q-arrow">&#9660;</span></div>
+  <div class="q-detail">
+    <div class="passage" style="text-align:center;font-size:1.1rem"><strong>14x / (7y) = 2&radic;(w + 19)</strong><br><br><span style="font-size:.9rem;text-align:left;display:block">The given equation relates the distinct positive real numbers w, x, and y. Which equation correctly expresses w in terms of x and y?</span></div>
+    <ul class="choices">
+      <li data-letter="A)">w = &radic;(x/y) &minus; 19</li>
+      <li data-letter="B)">w = &radic;(28x/(14y)) &minus; 19</li>
+      <li data-letter="C)" class="correct-answer">w = (x/y)&sup2; &minus; 19</li>
+      <li data-letter="D)">w = (28x/(14y))&sup2; &minus; 19</li>
+    </ul>
+    <div class="explanation">
+      <div class="why-right"><strong>Solution:</strong><br>
+        1. Simplify left side: 14x/(7y) = <strong>2x/y</strong><br>
+        2. Divide both sides by 2: <strong>x/y = &radic;(w + 19)</strong><br>
+        3. Square both sides: <strong>(x/y)&sup2; = w + 19</strong><br>
+        4. Subtract 19: <strong>w = (x/y)&sup2; &minus; 19</strong><br><br>
+        <strong>Key technique:</strong> Isolate the square root, then square both sides. Remember: simplify first (14/7 = 2), then the 2s cancel.</div>
+    </div>
+  </div>
+</div>
+
+<!-- M1 Q21 -->
+<div class="question-card" onclick="toggleCard(this)">
+  <div class="q-header"><div class="q-info"><span class="q-number">Q21</span><span class="q-summary">Hannah: <span class="wrong-label">41.12</span> | Correct: <span class="correct-label">45.12</span></span></div><span class="q-arrow">&#9660;</span></div>
+  <div class="q-detail">
+    <div class="passage" style="font-size:.95rem">The expression 6&middot;<sup>5</sup>&radic;(3<sup>5</sup>x<sup>45</sup>) &middot; <sup>8</sup>&radic;(2<sup>8</sup>x) is equivalent to ax<sup>b</sup>, where a and b are positive constants and x &gt; 1. What is the value of a + b?</div>
+    <div class="explanation">
+      <div class="why-right"><strong>Solution:</strong><br>
+        Convert to rational exponents:<br>
+        &bull; <sup>5</sup>&radic;(3<sup>5</sup>x<sup>45</sup>) = 3<sup>5/5</sup> &middot; x<sup>45/5</sup> = 3 &middot; x<sup>9</sup><br>
+        &bull; <sup>8</sup>&radic;(2<sup>8</sup>x) = 2<sup>8/8</sup> &middot; x<sup>1/8</sup> = 2 &middot; x<sup>1/8</sup><br><br>
+        Multiply everything: 6 &middot; 3 &middot; x<sup>9</sup> &middot; 2 &middot; x<sup>1/8</sup> = <strong>36</strong> &middot; x<sup>9 + 1/8</sup> = 36x<sup>73/8</sup><br><br>
+        So a = 36, b = 73/8 = 9.125<br>
+        <strong>a + b = 36 + 73/8 = 288/8 + 73/8 = 361/8 = 45.125</strong><br><br>
+        Hannah got 41.12 instead of 45.12 &mdash; likely a small arithmetic error when adding 36 + 9.125. The key is carefully converting radicals to rational exponents and then adding the exponents when multiplying like bases.</div>
+    </div>
+  </div>
+</div>
+
+<!-- M1 Q23 -->
+<div class="question-card skipped" onclick="toggleCard(this)">
+  <div class="q-header"><div class="q-info"><span class="q-number">Q23</span><span class="q-summary"><span class="skip-label">Skipped</span> | Correct: <span class="correct-label">D</span></span></div><span class="q-arrow">&#9660;</span></div>
+  <div class="q-detail">
+    <div class="passage" style="font-size:.95rem">The expression 4x&sup2; + bx &minus; 45, where b is a constant, can be rewritten as (hx + k)(x + j), where h, k, and j are integer constants. Which of the following must be an integer?</div>
+    <ul class="choices">
+      <li data-letter="A)">b/h</li>
+      <li data-letter="B)">b/k</li>
+      <li data-letter="C)">45/h</li>
+      <li data-letter="D)" class="correct-answer">45/k</li>
+    </ul>
+    <div class="explanation">
+      <div class="why-right"><strong>Solution:</strong><br>
+        Expand (hx + k)(x + j) = hx&sup2; + (jh + k)x + kj<br><br>
+        Match to 4x&sup2; + bx &minus; 45:<br>
+        &bull; h = 4 (leading coefficient)<br>
+        &bull; kj = &minus;45 (constant term)<br>
+        &bull; Since j is an integer: j = &minus;45/k<br>
+        &bull; For j to be an integer, &minus;45/k must be an integer<br>
+        &bull; Therefore <strong>45/k must be an integer</strong> &rarr; Answer D<br><br>
+        <strong>Key technique:</strong> When a quadratic is factored, the constant term equals the product of the constants in each factor. Use this constraint to determine what must be an integer.</div>
+    </div>
+  </div>
+</div>
+
+<!-- M1 Q26 -->
+<div class="question-card skipped" onclick="toggleCard(this)">
+  <div class="q-header"><div class="q-info"><span class="q-number">Q26</span><span class="q-summary"><span class="skip-label">Skipped</span> | Correct: <span class="correct-label">D (&minus;12)</span></span></div><span class="q-arrow">&#9660;</span></div>
+  <div class="q-detail">
+    <div class="passage" style="font-size:.95rem">In the xy-plane, a parabola has vertex (9, &minus;14) and intersects the x-axis at two points. If the equation of the parabola is written in the form y = ax&sup2; + bx + c, where a, b, and c are constants, which of the following could be the value of a + b + c?</div>
+    <ul class="choices">
+      <li data-letter="A)">&minus;23</li>
+      <li data-letter="B)">&minus;19</li>
+      <li data-letter="C)">&minus;14</li>
+      <li data-letter="D)" class="correct-answer">&minus;12</li>
+    </ul>
+    <div class="explanation">
+      <div class="why-right"><strong>Solution:</strong><br>
+        Vertex form: y = a(x &minus; 9)&sup2; &minus; 14<br>
+        Expand: y = ax&sup2; &minus; 18ax + 81a &minus; 14<br><br>
+        So: a = a, b = &minus;18a, c = 81a &minus; 14<br>
+        <strong>a + b + c = a &minus; 18a + 81a &minus; 14 = 64a &minus; 14</strong><br><br>
+        Since vertex is below x-axis and parabola crosses x-axis at two points &rarr; opens upward &rarr; a &gt; 0<br><br>
+        Test D: 64a &minus; 14 = &minus;12 &rarr; 64a = 2 &rarr; a = 1/32 &gt; 0 &#10003;<br>
+        Test C: 64a &minus; 14 = &minus;14 &rarr; a = 0 (not a parabola) &#10007;<br>
+        Test B: 64a &minus; 14 = &minus;19 &rarr; a = &minus;5/64 &lt; 0 &#10007;<br>
+        Test A: 64a &minus; 14 = &minus;23 &rarr; a = &minus;9/64 &lt; 0 &#10007;<br><br>
+        <strong>Key insight:</strong> a + b + c = f(1) &mdash; it's the y-value when x = 1. Use vertex form, expand, and note that a must be positive for the parabola to open upward.</div>
+    </div>
+  </div>
+</div>
+
+<!-- M1 Q27 -->
+<div class="question-card skipped" onclick="toggleCard(this)">
+  <div class="q-header"><div class="q-info"><span class="q-number">Q27</span><span class="q-summary"><span class="skip-label">Skipped</span> | Correct: <span class="correct-label">5</span></span></div><span class="q-arrow">&#9660;</span></div>
+  <div class="q-detail">
+    <div class="passage" style="font-size:.95rem">Function f is defined by f(x) = &minus;a<sup>x</sup> + b, where a and b are constants. In the xy-plane, the graph of y = f(x) &minus; 15 has a y-intercept at (0, &minus;99/7). The product of a and b is 65/7. What is the value of a?</div>
+    <div class="explanation">
+      <div class="why-right"><strong>Solution:</strong><br>
+        y = f(x) &minus; 15 = &minus;a<sup>x</sup> + b &minus; 15<br><br>
+        Y-intercept means x = 0:<br>
+        &minus;99/7 = &minus;a<sup>0</sup> + b &minus; 15 = &minus;1 + b &minus; 15 = b &minus; 16<br>
+        &rarr; b = &minus;99/7 + 16 = &minus;99/7 + 112/7 = <strong>13/7</strong><br><br>
+        Given ab = 65/7:<br>
+        a(13/7) = 65/7<br>
+        a = (65/7) &divide; (13/7) = 65/13 = <strong>5</strong><br><br>
+        <strong>Key technique:</strong> When x = 0, any base a<sup>0</sup> = 1. Use this to find b from the y-intercept, then use the product ab to find a.</div>
+    </div>
+  </div>
+</div>
+
+</div><!-- end Math M1 -->
+
+<!-- ===================== MATH MODULE 2 ===================== -->
+<div class="section-header" onclick="toggleSection(this)">
+  <div><h2>Math &mdash; Module 2</h2></div>
+  <div class="stats"><span style="color:var(--correct)">22/27</span><span style="color:var(--wrong)">5 missed</span><span class="arrow">&#9660;</span></div>
+</div>
+<div class="section-content">
+
+<!-- M2 Q17 -->
+<div class="question-card skipped" onclick="toggleCard(this)">
+  <div class="q-header"><div class="q-info"><span class="q-number">Q17</span><span class="q-summary"><span class="skip-label">Skipped</span> | Correct: <span class="correct-label">B (1/7)</span></span></div><span class="q-arrow">&#9660;</span></div>
+  <div class="q-detail">
+    <div class="passage" style="text-align:center;font-size:1.1rem"><strong>&minus;3x + 21px = 84</strong><br><br><span style="font-size:.9rem;text-align:left;display:block">In the given equation, p is a constant. The equation has no solution. What is the value of p?</span></div>
+    <ul class="choices">
+      <li data-letter="A)">0</li>
+      <li data-letter="B)" class="correct-answer">1/7</li>
+      <li data-letter="C)">4/3</li>
+      <li data-letter="D)">4</li>
+    </ul>
+    <div class="hannah-note">i suck at the constant ones</div>
+    <div class="explanation">
+      <div class="why-right"><strong>Solution:</strong><br>
+        Factor out x from the left side:<br>
+        &minus;3x + 21px = x(&minus;3 + 21p) = <strong>x(21p &minus; 3)</strong> = 84<br><br>
+        Or factor out &minus;3: <strong>&minus;3x(1 &minus; 7p) = 84</strong><br><br>
+        For <strong>no solution</strong>, the coefficient of x must equal 0 (giving 0 = 84, which is false):<br>
+        1 &minus; 7p = 0 &rarr; 7p = 1 &rarr; <strong>p = 1/7</strong><br><br>
+        <strong>Rule to memorize for "no solution" problems:</strong><br>
+        &bull; Combine all x terms on one side<br>
+        &bull; If coefficient of x = 0 and the other side &ne; 0 &rarr; no solution<br>
+        &bull; Set the coefficient of x equal to 0 and solve for the constant</div>
+    </div>
+  </div>
+</div>
+
+<!-- M2 Q21 -->
+<div class="question-card skipped" onclick="toggleCard(this)">
+  <div class="q-header"><div class="q-info"><span class="q-number">Q21</span><span class="q-summary"><span class="skip-label">Skipped</span> | Correct: <span class="correct-label">51</span></span></div><span class="q-arrow">&#9660;</span></div>
+  <div class="q-detail">
+    <div class="passage" style="text-align:center;font-size:1.1rem"><strong>&minus;x&sup2; + bx &minus; 676 = 0</strong><br><br><span style="font-size:.9rem;text-align:left;display:block">In the given equation, b is a positive integer. The equation has no real solution. What is the greatest possible value of b?</span></div>
+    <div class="explanation">
+      <div class="why-right"><strong>Solution:</strong><br>
+        For no real solutions, the <strong>discriminant must be negative</strong>:<br>
+        b&sup2; &minus; 4ac &lt; 0<br><br>
+        Here a = &minus;1, b = b, c = &minus;676:<br>
+        b&sup2; &minus; 4(&minus;1)(&minus;676) &lt; 0<br>
+        b&sup2; &minus; 2704 &lt; 0<br>
+        b&sup2; &lt; 2704<br>
+        b &lt; &radic;2704 = 52 (since 52&sup2; = 2704 exactly)<br><br>
+        Since b must be strictly less than 52 and is a positive integer:<br>
+        <strong>Greatest possible b = 51</strong><br><br>
+        <strong>Discriminant formula to memorize:</strong><br>
+        &bull; b&sup2; &minus; 4ac &lt; 0 &rarr; no real solutions<br>
+        &bull; b&sup2; &minus; 4ac = 0 &rarr; exactly one solution<br>
+        &bull; b&sup2; &minus; 4ac &gt; 0 &rarr; two real solutions</div>
+    </div>
+  </div>
+</div>
+
+<!-- M2 Q23 -->
+<div class="question-card" onclick="toggleCard(this)">
+  <div class="q-header"><div class="q-info"><span class="q-number">Q23</span><span class="q-summary">Hannah: <span class="wrong-label">D</span> | Correct: <span class="correct-label">C (p = 36)</span></span></div><span class="q-arrow">&#9660;</span></div>
+  <div class="q-detail">
+    <div class="passage" style="text-align:center;font-size:1.1rem"><strong>f(x) = 5,470(0.64)<sup>x/12</sup></strong><br><br><span style="font-size:.9rem;text-align:left;display:block">The function f gives the value, in dollars, of a certain piece of equipment after x months of use. If the value of the equipment decreases each year by p% of its value the preceding year, what is the value of p?</span></div>
+    <ul class="choices">
+      <li data-letter="A)">4</li>
+      <li data-letter="B)">5</li>
+      <li data-letter="C)" class="correct-answer">36</li>
+      <li data-letter="D)" class="her-wrong">64</li>
+    </ul>
+    <div class="explanation">
+      <div class="why-right"><strong>Solution:</strong><br>
+        For f(x) = a &middot; r<sup>x/k</sup>, the value changes by the factor r every k units of x.<br><br>
+        Here r = 0.64 and k = 12 (months). So every 12 months (1 year), the value is <strong>multiplied by 0.64</strong>.<br><br>
+        If the value is multiplied by 0.64, that means <strong>64% is retained</strong> and <strong>36% is lost</strong>.<br>
+        Percent decrease = 100(1 &minus; 0.64) = 100(0.36) = <strong>36%</strong><br>
+        So <strong>p = 36</strong>.<br><br>
+        <strong>Common mistake:</strong> Hannah chose 64, which is the percent <em>retained</em>, not the percent <em>lost</em>. When r = 0.64, the decrease is (1 &minus; r) = 0.36 = 36%, not 64%.</div>
+    </div>
+  </div>
+</div>
+
+<!-- M2 Q25 -->
+<div class="question-card" onclick="toggleCard(this)">
+  <div class="q-header"><div class="q-info"><span class="q-number">Q25</span><span class="q-summary">Hannah: <span class="wrong-label">B</span> | Correct: <span class="correct-label">D</span></span></div><span class="q-arrow">&#9660;</span></div>
+  <div class="q-detail">
+    <div class="passage" style="font-size:.95rem">The equation x&sup2; + (y &minus; 1)&sup2; = 49 represents circle A. Circle B is obtained by shifting circle A down 2 units in the xy-plane. Which of the following equations represents circle B?</div>
+    <ul class="choices">
+      <li data-letter="A)">(x &minus; 2)&sup2; + (y &minus; 1)&sup2; = 49</li>
+      <li data-letter="B)" class="her-wrong">x&sup2; + (y &minus; 3)&sup2; = 49</li>
+      <li data-letter="C)">(x + 2)&sup2; + (y &minus; 1)&sup2; = 49</li>
+      <li data-letter="D)" class="correct-answer">x&sup2; + (y + 1)&sup2; = 49</li>
+    </ul>
+    <div class="hannah-note">Memorize da circle formula</div>
+    <div class="explanation">
+      <div class="why-right"><strong>Solution:</strong><br>
+        <strong>Circle formula: (x &minus; h)&sup2; + (y &minus; k)&sup2; = r&sup2;</strong> has center (h, k) and radius r.<br><br>
+        Circle A: x&sup2; + (y &minus; 1)&sup2; = 49 &rarr; center (0, 1), radius 7<br><br>
+        Shift <strong>down 2</strong> &rarr; subtract 2 from y-coordinate of center:<br>
+        New center: (0, 1 &minus; 2) = (0, <strong>&minus;1</strong>)<br>
+        Radius stays 7.<br><br>
+        Circle B: x&sup2; + (y &minus; (&minus;1))&sup2; = 49 &rarr; <strong>x&sup2; + (y + 1)&sup2; = 49</strong></div>
+      <div class="why-wrong"><strong>Why B is incorrect:</strong> x&sup2; + (y &minus; 3)&sup2; = 49 has center (0, <strong>3</strong>), which is circle A shifted <em>up</em> 2 units, not down. <br><br><strong>Shifting rules:</strong> Down means <em>decrease</em> k. (y &minus; 1) shifted down 2 becomes (y &minus; (&minus;1)) = (y + 1), not (y &minus; 3).</div>
+    </div>
+  </div>
+</div>
+
+<!-- M2 Q26 -->
+<div class="question-card skipped" onclick="toggleCard(this)">
+  <div class="q-header"><div class="q-info"><span class="q-number">Q26</span><span class="q-summary"><span class="skip-label">Skipped</span> | Correct: <span class="correct-label">B (8 cm)</span></span></div><span class="q-arrow">&#9660;</span></div>
+  <div class="q-detail">
+    <div class="passage" style="font-size:.95rem">Two identical rectangular prisms each have a height of 90 centimeters (cm). The base of each prism is a square, and the surface area of each prism is K cm&sup2;. If the prisms are glued together along a square base, the resulting prism has a surface area of (92/47)K cm&sup2;. What is the side length, in cm, of each square base?</div>
+    <ul class="choices">
+      <li data-letter="A)">4</li>
+      <li data-letter="B)" class="correct-answer">8</li>
+      <li data-letter="C)">9</li>
+      <li data-letter="D)">16</li>
+    </ul>
+    <div class="explanation">
+      <div class="why-right"><strong>Solution:</strong><br>
+        Let x = side length of the square base.<br><br>
+        When glued together, two square faces are hidden:<br>
+        Combined SA = 2K &minus; 2x&sup2;<br><br>
+        Set equal: 2K &minus; 2x&sup2; = (92/47)K<br>
+        &rarr; 2K &minus; (92/47)K = 2x&sup2;<br>
+        &rarr; (94/47 &minus; 92/47)K = 2x&sup2;<br>
+        &rarr; (2/47)K = 2x&sup2; &rarr; <strong>K = 47x&sup2;</strong><br><br>
+        Each prism's SA: K = 2x&sup2; + 4(90x) = 2x&sup2; + 360x<br>
+        So: 2x&sup2; + 360x = 47x&sup2;<br>
+        &rarr; 45x&sup2; &minus; 360x = 0<br>
+        &rarr; x(45x &minus; 360) = 0<br>
+        &rarr; x = 0 or x = 360/45 = <strong>8</strong><br><br>
+        <strong>Key technique:</strong> When gluing prisms together, the combined SA = 2 &times; (individual SA) &minus; 2 &times; (hidden face area). Set up the equation, then also express K in terms of x using the SA formula.</div>
+    </div>
+  </div>
+</div>
+
+</div><!-- end Math M2 -->
+
+<!-- ========== STUDY FOCUS AREAS ========== -->
+<div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.5rem;margin:2rem 0;box-shadow:0 1px 3px rgba(0,0,0,.06)">
+  <h3 style="margin-bottom:1rem">Areas to Focus On</h3>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1rem">
+    <div style="background:#f1f5f9;border-radius:8px;padding:1rem">
+      <strong style="color:var(--accent)">Reading & Writing (7 missed)</strong>
+      <ul style="margin-top:.5rem;padding-left:1.25rem;font-size:.9rem;color:#475569">
+        <li>Text structure & function (Q7, Q8)</li>
+        <li>"Surprised to discover" &mdash; what contradicts expectations (Q17)</li>
+        <li>Logical conclusions from passages (Q18)</li>
+        <li>Semicolon vs comma placement with "however" (Q26)</li>
+        <li>Transition words: "alternatively" vs "specifically" (Q28)</li>
+        <li>Completing arguments logically (Q16)</li>
+      </ul>
+    </div>
+    <div style="background:#f1f5f9;border-radius:8px;padding:1rem">
+      <strong style="color:var(--accent)">Math (10 missed)</strong>
+      <ul style="margin-top:.5rem;padding-left:1.25rem;font-size:.9rem;color:#475569">
+        <li>Rational exponents / radical simplification (M1 Q21)</li>
+        <li>Solving for a variable with square roots (M1 Q19)</li>
+        <li>"No solution" linear equations (M2 Q17) &mdash; <em>she flagged this as a weakness</em></li>
+        <li>Discriminant conditions (M2 Q21)</li>
+        <li>Exponential decay: retained vs lost (M2 Q23)</li>
+        <li>Circle equation & transformations (M2 Q25) &mdash; <em>she flagged this too</em></li>
+        <li>Vertex form &amp; parabola properties (M1 Q26)</li>
+        <li>Factoring constraints (M1 Q23)</li>
+        <li>3D geometry / surface area (M2 Q26)</li>
+        <li>Exponential functions with y-intercept (M1 Q27)</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div style="text-align:center;color:var(--muted);font-size:.8rem;padding:2rem 0 1rem">
+  Scores calculated using the official College Board Practice Test #4 conversion table.<br>
+  Answer explanations sourced from the official SAT Practice Test #4 Answer Explanations.
+</div>
+
+</div>
+
+<script>
+function toggleSection(el){el.classList.toggle('open');el.nextElementSibling.classList.toggle('open')}
+function toggleCard(el){el.classList.toggle('open')}
+document.addEventListener('DOMContentLoaded',()=>{document.querySelectorAll('.section-header').forEach(h=>{h.classList.add('open');h.nextElementSibling.classList.add('open')})})
+</script>
+</body>
+</html>

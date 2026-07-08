@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hannah's SAT Practice Set</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@400;500;600;700;800&display=swap">
+<style>
+  :root{--sat-blue:#003057;--sat-light:#e8eef4;--bg:#f5f5f0;--card:#fff;--text:#1a1a1a;--muted:#64748b;--border:#e2e8f0;--accent:#1e3a5f}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
+  .header{background:var(--sat-blue);color:#fff;padding:2rem 1.5rem;text-align:center;border-bottom:4px solid #0066cc}
+  .header h1{font-size:1.6rem;font-weight:800;letter-spacing:-.02em} .header p{opacity:.8;font-size:.9rem;margin-top:.25rem}
+  .container{max-width:860px;margin:0 auto;padding:1.5rem}
+  .intro{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:1.25rem;margin-bottom:2rem;font-size:.9rem;color:#475569;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+  .intro strong{color:var(--sat-blue)}
+  .intro ul{margin:.6rem 0 0 1.1rem} .intro li{margin-bottom:.2rem}
+  .topic-header{background:var(--sat-blue);color:#fff;padding:.75rem 1.25rem;border-radius:8px 8px 0 0;font-weight:700;font-size:1rem;margin-top:2rem;display:flex;justify-content:space-between;align-items:center}
+  .topic-header .count{font-size:.8rem;opacity:.7;font-weight:500}
+
+  /* Question styling */
+  .q-block{background:var(--card);border:1px solid var(--border);border-top:0;padding:1.5rem 1.75rem;position:relative}
+  .q-block:last-of-type{border-radius:0 0 8px 8px;margin-bottom:.5rem}
+  .q-num{font-family:'Inter',sans-serif;font-weight:800;font-size:.8rem;color:var(--sat-blue);margin-bottom:.75rem}
+  .q-text{font-family:'Source Serif 4',Georgia,serif;font-size:.95rem;line-height:1.8;margin-bottom:1rem;color:#222}
+  .q-text em{font-style:italic}
+  .q-stem{font-family:'Inter',sans-serif;font-weight:600;font-size:.9rem;margin-bottom:.75rem;color:#111}
+  .choices{list-style:none;display:flex;flex-direction:column;gap:.35rem}
+  .choices li{padding:.55rem .75rem .55rem 2.8rem;border-radius:5px;font-size:.9rem;font-family:'Source Serif 4',Georgia,serif;position:relative;border:1.5px solid #e5e7eb;line-height:1.5;color:#333}
+  .choices li::before{content:attr(data-letter);position:absolute;left:.6rem;top:.45rem;font-family:'Inter',sans-serif;font-weight:700;font-size:.75rem;color:#888;width:1.5rem;height:1.5rem;border:2px solid #ccc;border-radius:50%;display:flex;align-items:center;justify-content:center}
+  .grid-in{font-style:italic;color:var(--muted);font-size:.85rem;margin-top:.5rem}
+
+  .footer{text-align:center;color:var(--muted);font-size:.75rem;padding:2rem 0 1rem}
+  @media(max-width:600px){.q-block{padding:1rem}.container{padding:1rem}}
+</style>
+</head>
+<body>
+<div class="header">
+  <h1>Hannah's SAT Practice Set</h1>
+  <p>20 Questions &mdash; Math &amp; Reading and Writing</p>
+</div>
+<div class="container">
+
+<div class="intro">
+  Work through all 20 questions. A few tips to keep it close to the real thing:
+  <ul>
+    <li>Use scratch paper for the math &mdash; show your work.</li>
+    <li>Try it <strong>untimed first</strong> to get every question right, then redo it under time pressure.</li>
+    <li>Write your answers on a separate sheet (letter A&ndash;D, or the number for grid-ins) so you can check them with Ryan afterward.</li>
+    <li>Don't skip &mdash; take your best guess on anything you're unsure of.</li>
+  </ul>
+</div>
+
+<!-- ==================== QUADRATICS ==================== -->
+<div class="topic-header">Quadratics <span class="count">5 questions</span></div>
+
+<div class="q-block">
+  <div class="q-num">Question 1</div>
+  <div class="q-text">y = x&sup2; &minus; 6x + 8</div>
+  <p class="q-stem">The equation above represents a parabola in the xy-plane. Which of the following equivalent forms of the equation displays the x-intercepts of the parabola as constants or coefficients?</p>
+  <ul class="choices">
+    <li data-letter="A">y &minus; 8 = x&sup2; &minus; 6x</li>
+    <li data-letter="B">y + 1 = (x &minus; 3)&sup2;</li>
+    <li data-letter="C">y = x(x &minus; 6) + 8</li>
+    <li data-letter="D">y = (x &minus; 2)(x &minus; 4)</li>
+  </ul>
+</div>
+
+<div class="q-block">
+  <div class="q-num">Question 2</div>
+  <div class="q-text">y = a(x &minus; 2)(x + 4)</div>
+  <p class="q-stem">In the quadratic equation above, a is a nonzero constant. The graph of the equation in the xy-plane is a parabola with vertex (c, d). Which of the following is equal to d?</p>
+  <ul class="choices">
+    <li data-letter="A">&minus;9a</li>
+    <li data-letter="B">&minus;8a</li>
+    <li data-letter="C">&minus;5a</li>
+    <li data-letter="D">&minus;2a</li>
+  </ul>
+</div>
+
+<div class="q-block">
+  <div class="q-num">Question 3</div>
+  <div class="q-text">y = 3<br>y = ax&sup2; + b</div>
+  <p class="q-stem">In the system of equations above, a and b are constants. For which of the following values of a and b does the system of equations have exactly two real solutions?</p>
+  <ul class="choices">
+    <li data-letter="A">a = &minus;2, b = 2</li>
+    <li data-letter="B">a = &minus;2, b = 4</li>
+    <li data-letter="C">a = 2, b = 4</li>
+    <li data-letter="D">a = 4, b = 3</li>
+  </ul>
+</div>
+
+<div class="q-block">
+  <div class="q-num">Question 4</div>
+  <p class="q-stem">What are the solutions to 3x&sup2; + 12x + 6 = 0?</p>
+  <ul class="choices">
+    <li data-letter="A">x = &minus;2 &plusmn; &radic;2</li>
+    <li data-letter="B">x = &minus;2 &plusmn; (&radic;30)/3</li>
+    <li data-letter="C">x = &minus;6 &plusmn; &radic;2</li>
+    <li data-letter="D">x = &minus;6 &plusmn; 6&radic;2</li>
+  </ul>
+</div>
+
+<div class="q-block">
+  <div class="q-num">Question 5</div>
+  <div class="q-text">In the xy-plane, the point (3, 6) lies on the graph of the function f(x) = 3x&sup2; &minus; bx + 12. What is the value of b?</div>
+  <p class="grid-in">Student-produced response (grid-in)</p>
+</div>
+
+<!-- ==================== EXPONENTIAL ==================== -->
+<div class="topic-header">Exponential Functions <span class="count">3 questions</span></div>
+
+<div class="q-block">
+  <div class="q-num">Question 6</div>
+  <p class="q-stem">A radioactive substance decays at an annual rate of 13 percent. If the initial amount of the substance is 325 grams, which of the following functions f models the remaining amount of the substance, in grams, t years later?</p>
+  <ul class="choices">
+    <li data-letter="A">f(t) = 325(0.87)<sup>t</sup></li>
+    <li data-letter="B">f(t) = 325(0.13)<sup>t</sup></li>
+    <li data-letter="C">f(t) = 0.87(325)<sup>t</sup></li>
+    <li data-letter="D">f(t) = 0.13(325)<sup>t</sup></li>
+  </ul>
+</div>
+
+<div class="q-block">
+  <div class="q-num">Question 7</div>
+  <p class="q-stem">In planning maintenance for a city's infrastructure, a civil engineer estimates that, starting from the present, the population of the city will decrease by 10 percent every 20 years. If the present population of the city is 50,000, which of the following expressions represents the engineer's estimate of the population of the city t years from now?</p>
+  <ul class="choices">
+    <li data-letter="A">50,000(0.1)<sup>20t</sup></li>
+    <li data-letter="B">50,000(0.1)<sup>t/20</sup></li>
+    <li data-letter="C">50,000(0.9)<sup>20t</sup></li>
+    <li data-letter="D">50,000(0.9)<sup>t/20</sup></li>
+  </ul>
+</div>
+
+<div class="q-block">
+  <div class="q-num">Question 8</div>
+  <div class="q-text">Jessica opened a bank account that earns 2 percent interest compounded annually. Her initial deposit was $100, and she uses the expression $100(x)<sup>t</sup> to find the value of the account after t years.</div>
+  <p class="q-stem">What is the value of x in the expression?</p>
+  <p class="grid-in">Student-produced response (grid-in)</p>
+</div>
+
+<!-- ==================== NO SOLUTION ==================== -->
+<div class="topic-header">Systems: No Solution &amp; Infinitely Many Solutions <span class="count">2 questions</span></div>
+
+<div class="q-block">
+  <div class="q-num">Question 9</div>
+  <div class="q-text">kx &minus; 3y = 4<br>4x &minus; 5y = 7</div>
+  <p class="q-stem">In the system of equations above, k is a constant and x and y are variables. For what value of k will the system of equations have no solution?</p>
+  <ul class="choices">
+    <li data-letter="A">12/5</li>
+    <li data-letter="B">16/7</li>
+    <li data-letter="C">&minus;16/7</li>
+    <li data-letter="D">&minus;12/5</li>
+  </ul>
+</div>
+
+<div class="q-block">
+  <div class="q-num">Question 10</div>
+  <div class="q-text">ax + by = 12<br>2x + 8y = 60</div>
+  <p class="q-stem">In the system of equations above, a and b are constants. If the system has infinitely many solutions, what is the value of a/b?</p>
+  <p class="grid-in">Student-produced response (grid-in)</p>
+</div>
+
+<!-- ==================== CIRCLE EQUATIONS ==================== -->
+<div class="topic-header">Circle Equations <span class="count">2 questions</span></div>
+
+<div class="q-block">
+  <div class="q-num">Question 11</div>
+  <p class="q-stem">Which of the following is an equation of a circle in the xy-plane with center (0, 4) and a radius with endpoint (4/3, 5)?</p>
+  <ul class="choices">
+    <li data-letter="A">x&sup2; + (y &minus; 4)&sup2; = 25/9</li>
+    <li data-letter="B">x&sup2; + (y + 4)&sup2; = 25/9</li>
+    <li data-letter="C">x&sup2; + (y &minus; 4)&sup2; = 5/3</li>
+    <li data-letter="D">x&sup2; + (y + 4)&sup2; = 3/5</li>
+  </ul>
+</div>
+
+<div class="q-block">
+  <div class="q-num">Question 12</div>
+  <div class="q-text">x&sup2; + y&sup2; + 4x &minus; 2y = &minus;1</div>
+  <p class="q-stem">The equation of a circle in the xy-plane is shown above. What is the radius of the circle?</p>
+  <ul class="choices">
+    <li data-letter="A">2</li>
+    <li data-letter="B">3</li>
+    <li data-letter="C">4</li>
+    <li data-letter="D">9</li>
+  </ul>
+</div>
+
+<!-- ==================== EXPONENTS ==================== -->
+<div class="topic-header">Radicals &amp; Rational Exponents <span class="count">2 questions</span></div>
+
+<div class="q-block">
+  <div class="q-num">Question 13</div>
+  <p class="q-stem">If 3x &minus; y = 12, what is the value of 8<sup>x</sup> / 2<sup>y</sup>?</p>
+  <ul class="choices">
+    <li data-letter="A">2<sup>12</sup></li>
+    <li data-letter="B">4<sup>4</sup></li>
+    <li data-letter="C">8<sup>2</sup></li>
+    <li data-letter="D">The value cannot be determined from the information given.</li>
+  </ul>
+</div>
+
+<div class="q-block">
+  <div class="q-num">Question 14</div>
+  <div class="q-text">If (x<sup>a&sup2;</sup>) / (x<sup>b&sup2;</sup>) = x<sup>16</sup>, x &gt; 1, and a + b = 2, what is the value of a &minus; b?</div>
+  <ul class="choices">
+    <li data-letter="A">8</li>
+    <li data-letter="B">14</li>
+    <li data-letter="C">16</li>
+    <li data-letter="D">18</li>
+  </ul>
+</div>
+
+<!-- ==================== TRANSITIONS ==================== -->
+<div class="topic-header">Reading &amp; Writing: Transitions <span class="count">4 questions</span></div>
+
+<div class="q-block">
+  <div class="q-num">Question 15</div>
+  <div class="q-text">Among the possibilities to reconfigure a building's lighting is the installation of full-pane windows to allow the greatest degree of sunlight to reach office interiors. _______ businesses can install light tubes, pipes placed in workplace roofs to capture and funnel sunlight down into a building's interior.</div>
+  <p class="q-stem">Which choice completes the text with the most logical transition?</p>
+  <ul class="choices">
+    <li data-letter="A">Thus,</li>
+    <li data-letter="B">Nevertheless,</li>
+    <li data-letter="C">Alternatively,</li>
+    <li data-letter="D">Finally,</li>
+  </ul>
+</div>
+
+<div class="q-block">
+  <div class="q-num">Question 16</div>
+  <div class="q-text">In recent years, public libraries in the United States have experienced reductions in their operating funds due to cuts imposed at the federal, state, and local government levels. _______ library staffing has been cut by almost four percent since 2008.</div>
+  <p class="q-stem">Which choice completes the text with the most logical transition?</p>
+  <ul class="choices">
+    <li data-letter="A">However,</li>
+    <li data-letter="B">Consequently,</li>
+    <li data-letter="C">Nevertheless,</li>
+    <li data-letter="D">Previously,</li>
+  </ul>
+</div>
+
+<div class="q-block">
+  <div class="q-num">Question 17</div>
+  <div class="q-text">With sea otters to keep the population of sea urchins in check, kelp forests can flourish. In fact, two years or less of sea otters can completely eliminate sea urchins in a coastal area. Without sea otters present, _______ kelp forests run the danger of becoming barren stretches of coastal wasteland known as urchin barrens.</div>
+  <p class="q-stem">Which choice completes the text with the most logical transition?</p>
+  <ul class="choices">
+    <li data-letter="A">nevertheless,</li>
+    <li data-letter="B">however,</li>
+    <li data-letter="C">hence,</li>
+    <li data-letter="D">likewise,</li>
+  </ul>
+</div>
+
+<div class="q-block">
+  <div class="q-num">Question 18</div>
+  <div class="q-text">A 1994 survey concluded that only 18 percent of American colleges required at least one philosophy course. _______ between 1992 and 1996, more than 400 independent philosophy departments were eliminated from institutions.</div>
+  <p class="q-stem">Which choice completes the text with the most logical transition?</p>
+  <ul class="choices">
+    <li data-letter="A">Therefore,</li>
+    <li data-letter="B">Thus,</li>
+    <li data-letter="C">Moreover,</li>
+    <li data-letter="D">However,</li>
+  </ul>
+</div>
+
+<!-- ==================== PUNCTUATION ==================== -->
+<div class="topic-header">Reading &amp; Writing: Punctuation <span class="count">2 questions</span></div>
+
+<div class="q-block">
+  <div class="q-num">Question 19</div>
+  <div class="q-text">Living independently and demonstrating an intense work _______ the Harvey Girls became known as a transformative force in the American West.</div>
+  <p class="q-stem">Which choice completes the text so that it conforms to the conventions of Standard English?</p>
+  <ul class="choices">
+    <li data-letter="A">ethic;</li>
+    <li data-letter="B">ethic:</li>
+    <li data-letter="C">ethic, and</li>
+    <li data-letter="D">ethic,</li>
+  </ul>
+</div>
+
+<div class="q-block">
+  <div class="q-num">Question 20</div>
+  <div class="q-text">Her goals were _______ reduce waste, maintain and perpetuate knowledge and skills, and strengthen community.</div>
+  <p class="q-stem">Which choice completes the text so that it conforms to the conventions of Standard English?</p>
+  <ul class="choices">
+    <li data-letter="A">straightforward, however:</li>
+    <li data-letter="B">straightforward, therefore:</li>
+    <li data-letter="C">straightforward, nonetheless:</li>
+    <li data-letter="D">straightforward:</li>
+  </ul>
+</div>
+
+<div class="footer">
+  20 official-style SAT practice questions &mdash; Math &amp; Reading and Writing.<br>
+  When you're done, go over your answers with Ryan.
+</div>
+
+</div>
+</body>
+</html>
